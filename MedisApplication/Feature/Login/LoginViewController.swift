@@ -24,9 +24,7 @@ class LoginViewController: UIViewController {
     
     private func setupViewModel() {
         viewModel.successLogin = { token in
-            let alert = UIAlertController(title: "Horee", message: "Login Berhasil, Token : \(token)", preferredStyle:UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "Tutup", style: UIAlertAction.Style.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+            self.showAlert("Horee", message: "Login Berhasil, Token : \(token)")
         }
         
         viewModel.showLoading = { isLoading in
@@ -39,7 +37,13 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func loginButton(_ sender: Any) {
-        viewModel.login(email: "eve.holt@reqres.in", password: "cityslicka")
+        if emailField.text == "" {
+            self.showAlert("Mohon maaf!", message: "Masukkan email terlebih dahulu")
+        } else if passwordField.text == "" {
+            self.showAlert("Mohon maaf!", message: "Masukkan passwrod terlebih dahulu")
+        } else {
+            viewModel.login(email: emailField.text ?? "", password: passwordField.text ?? "")
+        }
     }
     
     @IBAction func seePasswordButton(_ sender: Any) {
